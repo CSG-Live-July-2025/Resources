@@ -70,18 +70,18 @@ rbenv is a Ruby version manager that allows you to install and manage multiple v
 
 ---
 
-### **Step 3: Install Ruby 3.2.3**
+### **Step 3: Install Ruby 3.3.4**
 
 1. **Install Ruby:**
    - Run:
      ```bash
-     rbenv install 3.2.3
+     rbenv install 3.3.4
      ```
 
 2. **Set Ruby Version Globally:**
    - Run:
      ```bash
-     rbenv global 3.2.3
+     rbenv global 3.3.4
      ```
 
 3. **Verify Ruby Installation:**
@@ -89,7 +89,7 @@ rbenv is a Ruby version manager that allows you to install and manage multiple v
      ```bash
      ruby -v
      ```
-   - The output should be `ruby 3.2.3`.
+   - The output should be `ruby 3.3.4`.
 
 ---
 
@@ -134,8 +134,8 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init - zsh)"
 
 # Install Ruby
-rbenv install 3.2.3
-rbenv global 3.2.3
+rbenv install 3.3.4
+rbenv global 3.3.4
 
 # Verify Ruby installation
 ruby -v

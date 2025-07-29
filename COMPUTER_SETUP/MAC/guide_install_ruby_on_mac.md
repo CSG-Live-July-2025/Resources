@@ -61,11 +61,11 @@ Homebrew is a package manager for macOS that simplifies the installation of soft
      rbenv install -l
      ```
 
-   - Install the desired Ruby version (e.g., 3.2.3):
+   - Install the desired Ruby version (e.g., 3.3.4):
 
      ```bash
-     rbenv install 3.2.3
-     rbenv global 3.2.3
+     rbenv install 3.3.4
+     rbenv global 3.3.4
      ```
 
 4. **Verify Ruby Installation:**
@@ -74,7 +74,7 @@ Homebrew is a package manager for macOS that simplifies the installation of soft
    ruby -v
    ```
 
-   - You should see something like `ruby 3.2.3`.
+   - You should see something like `ruby 3.3.4`.
 
 **Ruby is now installed on your Mac!**
 
