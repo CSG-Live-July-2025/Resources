@@ -53,7 +53,7 @@ PostgreSQL (pronounced *post-gress-Q-L*) is a powerful, open-source, relational 
 | Name | `mini-capstone-api` (or your project name) |
 | Branch | `main` |
 | Language | Ruby |
-| Build Command | `bundle install; bundle exec rails db:create db:migrate;` |
+| Build Command | `bundle install; bundle exec rails db:create db:migrate db:seed;` |
 | Start Command | `bundle exec puma -C config/puma.rb -b tcp://0.0.0.0:$PORT` |
 | Instance Type | Free |
 
@@ -65,6 +65,8 @@ PostgreSQL (pronounced *post-gress-Q-L*) is a powerful, open-source, relational 
 | `RAILS_MASTER_KEY` | *Contents of your local `config/master.key` file* |
 
 6. Click **Create Web Service** → build & deploy (~5 min).
+
+> **Important**: We're including `db:seed` in the build command for the first deployment. On Render's free tier, you don't have access to the terminal/shell, so you can't manually run `rails db:seed`. After your first successful deployment with seed data, you'll want to remove `db:seed` from the build command to prevent re-seeding on every deployment (see Section 9.2).
 
 ---
 
@@ -341,6 +343,8 @@ axios.defaults.baseURL = process.env.NODE_ENV === "development" ? "http://localh
 
 Replace `<your-mini-capstone-url>` or `<your-backend-url>` with your actual Render API URL.
 
+> **Important**: After your backend is deployed on Render, you'll get an actual URL like `https://mini-capstone-api-abc123.onrender.com`. Make sure to update the placeholder in your frontend code with this real URL. Don't forget to commit and push these changes to trigger a new Netlify deployment.
+
 #### 8.3 Check for Hardcoded API URLs
 
 > **Important**: After configuring the API URL above, make sure you don't have any hardcoded `http://localhost:3000` URLs remaining in your React components.
@@ -382,6 +386,11 @@ end
 ```
 
 Replace `https://your-actual-netlify-url.netlify.app` with your actual Netlify URL.
+
+> **Important**: When adding your deployed frontend URL to the CORS origins list, make sure to:
+> - Put the URL in quotes
+> - **Do NOT** include a trailing slash (/) at the end - this will break CORS
+> - Use `https://` for your Netlify URL (not `http://`)
 
 #### 8.5 Deploy the Changes  
 
@@ -431,6 +440,21 @@ This prevents re-seeding on every deployment.
 
 ---
 
+### 12 RENDER FREE TIER SPIN-DOWN
+
+> **Important**: Render's free tier automatically spins down (turns off) your server after periods of inactivity. This means:
+> - If your app hasn't been used for ~15 minutes, the server goes to sleep
+> - The first request after it's been sleeping will take **30 seconds to 1 minute** to wake up
+> - Subsequent requests will be fast until it goes to sleep again
+> - This is normal behavior for the free tier - paid plans don't have this limitation
+
+**What this means for testing:**
+- Don't panic if your first API call is very slow after not using the app
+- Your app isn't broken - it just needs time to wake up
+- Consider this when doing demos or showing your project to others
+
+---
+
 ## QUICK TROUBLESHOOTING TABLE  
 
 | Issue | Fix |
@@ -444,6 +468,33 @@ This prevents re-seeding on every deployment.
 | First API call is slow | Free Postgres cold-start—expect ~30s. Paid tier removes this. |
 | Empty array from API | Seeds haven't run yet; update build command to include `db:seed`. |
 | API calls still go to localhost | Check for hardcoded `localhost:3000` URLs in components; use `axios.defaults.baseURL` instead. |
+
+---
+
+### 13 FIXING REACT REFRESH 404 ERROR
+
+If you're getting 404 errors when refreshing pages in your React app (or navigating directly to routes like `/products/1`), you need to configure Netlify to handle client-side routing.
+
+#### 13.1 Create Netlify Redirects File
+
+Create a file called `_redirects` (no file extension) in your React app's `public` folder:
+
+```
+/* /index.html 200
+```
+
+That's it! This single line tells Netlify:
+- For any route that doesn't match a static file (`/*`)
+- Serve the `index.html` file instead
+- Return a 200 status code (not a redirect)
+
+#### 13.2 Deploy the Fix
+
+1. Commit and push this change to your frontend repository
+2. Netlify will automatically redeploy
+3. Test by refreshing on different routes - the 404 errors should be gone
+
+> **Why this happens**: React Router handles routing on the client side, but when you refresh the page, the browser asks the server for that specific route. Since it's a single-page app, those routes don't exist as actual files on the server, causing 404 errors. The redirect rule tells Netlify to serve the main `index.html` file for all routes, letting React Router take over.
 
 ---
 

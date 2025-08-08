@@ -367,6 +367,22 @@ const styles = StyleSheet.create({
 });
 ```
 
+## Development Tip: Where Console Logs Appear
+
+**Important for beginners**: Unlike web development where `console.log()` appears in the browser's developer console, in React Native/Expo your console logs appear in your **development server terminal** where you ran `npx expo start`.
+
+```jsx
+// Add this anywhere in your component to test
+console.log('Hello from React Native!');
+console.warn('This is a warning');
+console.error('This is an error');
+```
+
+When you save your file:
+- `console.log()` messages appear in your **terminal**
+- `console.warn()` and `console.error()` show both in terminal AND as yellow/red boxes in your app
+- Very helpful for debugging your code!
+
 ## Building a Photos CRUD App
 
 Now let's build a photos app, similar to your React web guide. We'll start with mock data to focus on learning React Native components, then connect to your Rails API later.

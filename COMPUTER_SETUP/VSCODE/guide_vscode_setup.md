@@ -78,11 +78,17 @@ Familiarize yourself with the interface:
      ```
 
 3. **Verify the Command:**
-   - Close VSCode if it’s open, then open the **Ubuntu terminal** and run:
+   - Close VSCode if it's open, then open the **Ubuntu terminal** and run:
      ```bash
      code .
      ```
    - This will open the current directory in VSCode.
+
+   > **If prompted to install WSL version:** If running `code .` asks you y/n to install the WSL version of VSCode, select **"No"** and then run:
+   > ```bash
+   > sudo apt remove -y code && sudo apt autoremove -y
+   > ```
+   > After this, try running `code .` again and it should work properly with your Windows VSCode installation.
 
 4. **Close and Reopen VSCode:**
    - After installation, close VSCode completely, then reopen it. The `code .` command should now work properly in your **Ubuntu (WSL)** terminal.
